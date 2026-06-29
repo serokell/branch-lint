@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2026 Serokell <https://serokell.io/>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+on:
+  schedule:
+    # runs every Monday at 10:00 am UTC
+    - cron: '0 10 * * 1'
+
+jobs:
+  check-outdated:
+    runs-on: [self-hosted, nix]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: check outdated packages
+        run: |
+          nix develop .#ci -c cabal update
+          nix develop .#ci -c cabal outdated --exit-code
