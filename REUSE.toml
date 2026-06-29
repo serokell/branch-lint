@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 Serokell <https://serokell.io>
+# SPDX-License-Identifier: CC0-1.0
+
+version = 1
+
+[[annotations]]
+path = ".github/**"
+SPDX-FileCopyrightText = "2026 Serokell <https://serokell.io>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "flake.lock"
+SPDX-FileCopyrightText = "2026 Serokell <https://serokell.io>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "stack.yaml.lock"
+SPDX-FileCopyrightText = "2026 Serokell <https://serokell.io>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "branch-lint.cabal"
+SPDX-FileCopyrightText = "2026 Serokell <https://serokell.io>"
+SPDX-License-Identifier = "MPL-2.0"
+

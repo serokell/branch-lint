@@ -1,0 +1,114 @@
+# SPDX-FileCopyrightText: 2026 Serokell <https://serokell.io>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+name: branch-lint
+version: 0.0.0
+author: Serokell <hi@serokell.io>
+github: serokell/branch-lint
+copyright: 2026 Serokell <https://serokell.io>
+synopsis: Validate git branch names against Serokell conventions
+description:
+  A library and CLI for validating git branch names against Serokell's
+  OneFlow-based branching conventions.
+category: Development
+license-file: LICENSE
+
+default-extensions:
+  - AllowAmbiguousTypes
+  - ApplicativeDo
+  - BangPatterns
+  - BlockArguments
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveAnyClass
+  - DeriveDataTypeable
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveTraversable
+  - DerivingStrategies
+  - DerivingVia
+  - EmptyCase
+  - FlexibleContexts
+  - FlexibleInstances
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - ImportQualifiedPost
+  - InstanceSigs
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - NegativeLiterals
+  - NoStarIsType
+  - NumDecimals
+  - NumericUnderscores
+  - OverloadedLabels
+  - OverloadedStrings
+  - PatternSynonyms
+  - PolyKinds
+  - QuasiQuotes
+  - RankNTypes
+  - RecordWildCards
+  - RecursiveDo
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - StandaloneKindSignatures
+  - StrictData
+  - TemplateHaskell
+  - TupleSections
+  - TypeApplications
+  - TypeFamilies
+  - TypeOperators
+  - UndecidableInstances
+  - UndecidableSuperClasses
+  - ViewPatterns
+
+ghc-options:
+  - -Weverything
+  - -Wno-missing-import-lists
+  - -Wno-missed-specialisations
+  - -Wno-all-missed-specialisations
+  - -Wno-unsafe
+  - -Wno-safe
+  - -Wno-missing-local-signatures
+  - -Wno-monomorphism-restriction
+  - -Wno-implicit-prelude
+  - -Wno-prepositive-qualified-module
+  - -Wno-inferred-safe-imports
+  - -Wno-missing-safe-haskell-mode
+  - -Wno-missing-exported-signatures
+
+dependencies:
+  - base >= 4.7 && < 5
+  - text
+
+library:
+  source-dirs: lib
+
+executables:
+  branch-lint:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+      - branch-lint
+    ghc-options:
+      - -threaded
+      - '"-with-rtsopts=-N"'
+
+tests:
+  branch-lint-test:
+    main: Main.hs
+    source-dirs: test
+    build-tools: tasty-discover:tasty-discover
+    dependencies:
+      - branch-lint
+      - tasty
+      - tasty-hunit
+    ghc-options:
+      - -Wno-incomplete-patterns
+      - -threaded
+      - -eventlog
+      - '"-with-rtsopts=-N -A64m -AL256m"'
