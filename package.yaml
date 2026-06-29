@@ -94,6 +94,7 @@ executables:
     source-dirs: app
     dependencies:
       - branch-lint
+      - with-utf8
     ghc-options:
       - -threaded
       - '"-with-rtsopts=-N"'
