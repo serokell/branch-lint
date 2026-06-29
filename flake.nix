@@ -106,7 +106,7 @@
           hlint = pkgs.build.haskell.hlint ./.;
           stylish-haskell = pkgs.build.haskell.stylish-haskell ./.;
           cabal-check = pkgs.build.haskell.cabal-check ./.;
-          hpack = pkgs.build.haskell.hpack ./.
+          hpack = pkgs.build.haskell.hpack ./.;
         };
       });
 }
