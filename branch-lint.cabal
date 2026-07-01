@@ -17,6 +17,8 @@ copyright:      2026 Serokell <https://serokell.io>
 license:        MPL-2.0
 license-file:   LICENSE
 build-type:     Simple
+tested-with:
+    GHC == 9.10.2
 
 source-repository head
   type: git
@@ -211,7 +213,7 @@ test-suite branch-lint-test
       UndecidableInstances
       UndecidableSuperClasses
       ViewPatterns
-  ghc-options: -Weverything -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-implicit-prelude -Wno-prepositive-qualified-module -Wno-inferred-safe-imports -Wno-missing-safe-haskell-mode -Wno-missing-exported-signatures -Wno-incomplete-patterns -threaded -eventlog "-with-rtsopts=-N -A64m -AL256m"
+  ghc-options: -Weverything -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-implicit-prelude -Wno-prepositive-qualified-module -Wno-inferred-safe-imports -Wno-missing-safe-haskell-mode -Wno-missing-exported-signatures -Wno-incomplete-patterns -Wno-missing-kind-signatures -threaded "-with-rtsopts=-N -A64m -AL256m"
   build-tool-depends:
       tasty-discover:tasty-discover
   build-depends:
