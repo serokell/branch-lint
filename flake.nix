@@ -50,6 +50,7 @@
           buildWithStack = false;
           # haskell.nix configuration
           extraArgs = {
+            index-state = "2026-06-29T00:00:00Z";
             modules = [
               (serokell-nix.lib.haskell.optionsLocalPackages {
                 ghcOptions = [
