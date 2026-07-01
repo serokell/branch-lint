@@ -14,7 +14,6 @@ description:
 category: Development
 license-file: LICENSE
 tested-with: GHC == 9.10.2
-
 default-extensions:
   - AllowAmbiguousTypes
   - ApplicativeDo

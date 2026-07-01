@@ -48,20 +48,6 @@
           # resolvers = [ "lts-19.13" ];
           # you can disable building with stack if your project does not use stack
           buildWithStack = false;
-          # haskell.nix configuration
-          extraArgs = {
-            index-state = "2026-06-29T00:00:00Z";
-            modules = [
-              (serokell-nix.lib.haskell.optionsLocalPackages {
-                ghcOptions = [
-                  # fail on warnings
-                  "-Werror"
-                  # disable optimisations, we don't need them if we don't package or deploy the executable
-                  "-O0"
-                ];
-              })
-            ];
-          };
         };
 
         # Uncomment if your project uses stack2cabal to generate cabal files
