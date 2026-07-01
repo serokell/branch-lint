@@ -13,6 +13,7 @@ description:
   OneFlow-based branching conventions.
 category: Development
 license-file: LICENSE
+tested-with: GHC == 9.10.2
 
 default-extensions:
   - AllowAmbiguousTypes
@@ -110,6 +111,6 @@ tests:
       - tasty-hunit
     ghc-options:
       - -Wno-incomplete-patterns
+      - -Wno-missing-kind-signatures
       - -threaded
-      - -eventlog
       - '"-with-rtsopts=-N -A64m -AL256m"'

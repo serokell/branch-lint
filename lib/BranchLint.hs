@@ -20,10 +20,12 @@ module BranchLint
 
 import Control.Monad (unless, when)
 import Data.Char (isAlphaNum, isDigit)
+import Data.Kind (Type)
 import Data.Text (Text)
 import Data.Text qualified as T
 
 -- | A successfully parsed Serokell branch name.
+type BranchName :: Type
 data BranchName = BranchName
   { bnUsername    :: Text
     -- ^ GitHub username, e.g. @alice@.
@@ -34,6 +36,7 @@ data BranchName = BranchName
   } deriving stock (Eq, Show)
 
 -- | Reasons a branch name can fail validation.
+type BranchError :: Type
 data BranchError
   = MissingSlash
     -- ^ Branch name contains no @\/@ separator.
