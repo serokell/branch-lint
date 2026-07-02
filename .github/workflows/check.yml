@@ -86,3 +86,19 @@ jobs:
       - name: test
         run: nix build -L .#checks.x86_64-linux.${{ matrix.prefix }}:test-all --keep-going
         if: success() || failure()
+
+  build-and-test-complete:
+    needs: build-and-test
+    name: build-and-test
+    if: always()
+    runs-on: [self-hosted, nix]
+    steps:
+      - name: Check build-and-test results
+        run: |
+          result="${{ needs.build-and-test.result }}"
+          if [[ "$result" == "success" || "$result" == "skipped" ]]; then
+            echo "All matrix builds passed."
+          else
+            echo "Matrix builds did not pass (result: $result)."
+            exit 1
+          fi
