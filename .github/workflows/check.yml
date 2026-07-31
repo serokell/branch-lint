@@ -1,0 +1,104 @@
+# SPDX-FileCopyrightText: 2026 Serokell <https://serokell.io/>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+name: Nix flake check
+on:
+  pull_request:
+  push:
+    # If your is default branch is 'main' delete the next line and uncomment the line following it
+    branches: master
+    # branches: main
+
+
+jobs:
+  validate:
+    runs-on: [self-hosted, nix]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: xrefcheck
+        run: nix run github:serokell/xrefcheck
+
+      - name: reuse
+        run: nix build -L .#checks.x86_64-linux.reuse-lint
+        # Run step even if the previous one has failed
+        if: success() || failure()
+
+      - name: hlint
+        run: nix build -L .#checks.x86_64-linux.hlint
+        if: success() || failure()
+
+      - name: stylish-haskell
+        run: nix build -L .#checks.x86_64-linux.stylish-haskell
+        if: success() || failure()
+
+      - name: check-trailing-whitespace
+        run: nix build -L .#checks.x86_64-linux.trailing-whitespace
+        if: success() || failure()
+
+      - name: cabal-check
+        run: nix build -L .#checks.x86_64-linux.cabal-check
+        if: success() || failure()
+
+      - name: check-hpack
+        run: nix build -L .#checks.x86_64-linux.hpack
+        if: success() || failure()
+
+      # - name: shellcheck
+      #   run: nix build -L .#checks.x86_64-linux.shellcheck
+      #   if: success() || failure()
+
+  check-branch-name:
+    runs-on: [self-hosted, nix]
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate branch name
+        run: nix run .#branch-lint -- "${{ github.head_ref }}"
+
+  # Export JSON serialized check prefixes
+  # For this to work, you must uncomment inherit (ci) build-matrix in flake.nix
+  check-prefixes:
+    runs-on: [self-hosted, nix]
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - id: set-matrix
+      run: echo "matrix=$(nix eval --json .#build-matrix.x86_64-linux)" >> $GITHUB_OUTPUT
+
+  build-and-test:
+    needs: check-prefixes
+    name: ${{ matrix.prefix }}
+    runs-on: [self-hosted, nix]
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.check-prefixes.outputs.matrix)}}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: build
+        run: nix build -L .#checks.x86_64-linux.${{ matrix.prefix }}:build-all --keep-going
+
+      - name: test
+        run: nix build -L .#checks.x86_64-linux.${{ matrix.prefix }}:test-all --keep-going
+        if: success() || failure()
+
+  build-and-test-complete:
+    needs: build-and-test
+    name: build-and-test
+    if: always()
+    runs-on: [self-hosted, nix]
+    steps:
+      - name: Check build-and-test results
+        run: |
+          result="${{ needs.build-and-test.result }}"
+          if [[ "$result" == "success" || "$result" == "skipped" ]]; then
+            echo "All matrix builds passed."
+          else
+            echo "Matrix builds did not pass (result: $result)."
+            exit 1
+          fi

@@ -8,11 +8,9 @@
 
 ## Reporting Issues
 
-[//]: # (Add proper project)
-[//]: # (Can be a github link)
-Please [open an issue](https://issues.serokell.io/newIssue?project=KEK)
+<!-- xrefcheck: ignore link -->
+Please [open an issue](https://github.com/serokell/branch-lint/issues/new)
 if you find a bug or have a feature request.
-Note: you need to login (e. g. using your GitHub account) first.
 Before submitting a bug report or feature request, check to make sure it hasn't already been submitted
 
 The more detailed your report is, the faster it can be resolved.
