@@ -28,7 +28,7 @@ alice/bl1-setup-repository
 
 - `<github-username>`: the branch owner's GitHub username
 - `<issue-id>`: a YouTrack ID (e.g. `bl5`) or GitHub issue number (e.g. `#42`)
-- `<brief-description>`: lowercase letters and dashes
+- `<brief-description>`: lowercase letters, digits, and dashes
 
 `branch-lint` encodes these rules and can run as a pre-commit hook, a CI check, or a standalone CLI.
 

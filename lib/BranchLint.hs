@@ -19,7 +19,7 @@ module BranchLint
   ) where
 
 import Control.Monad (unless, when)
-import Data.Char (isAlphaNum, isDigit)
+import Data.Char (isAlphaNum, isDigit, isLower)
 import Data.Kind (Type)
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -32,7 +32,8 @@ data BranchName = BranchName
   , bnIssueId     :: Text
     -- ^ Issue tracker ID, e.g. @bl1@ (YouTrack) or @#5@ (GitHub).
   , bnDescription :: Text
-    -- ^ Brief description in kebab-case, e.g. @setup-repository@.
+    -- ^ Brief description in lowercase kebab-case, optionally with digits,
+    --   e.g. @setup-repository@ or @release-2-notes@.
   } deriving stock (Eq, Show)
 
 -- | Reasons a branch name can fail validation.
@@ -54,6 +55,8 @@ data BranchError
     -- ^ Issue number contains non-digit characters.
   | EmptyDescription
     -- ^ No description follows the issue ID.
+  | InvalidDescription Text
+    -- ^ Description contains characters other than lowercase letters, digits, and dashes.
   deriving stock (Eq, Show)
 
 -- | Parse a raw branch name into its constituent parts.
@@ -98,6 +101,9 @@ renderError (InvalidIssueNumber num) =
 renderError EmptyDescription =
   "Branch name must include a description after the issue ID \
   \(e.g. 'bl1-setup-repository')."
+renderError (InvalidDescription description) =
+  "Description '" <> description <> "' must contain only lowercase letters, \
+  \digits, and dashes (e.g. 'setup-repository' or 'release-2-notes')."
 
 -- Dispatch on the issue-ID format: GitHub ("#<n>-<desc>") or YouTrack ("<key><n>-<desc>").
 parseIssueSlug :: Text -> Either BranchError (Text, Text)
@@ -115,6 +121,7 @@ parseGitHubSlug slug = do
   unless (T.all isDigit num) $ Left (InvalidIssueNumber num)
   let description = T.drop 1 rest
   when (T.null description) $ Left EmptyDescription
+  validateDescription description
   pure ("#" <> num, description)
 
 -- Parse "<key><number>-<description>" (YouTrack format).
@@ -130,4 +137,13 @@ parseYouTrackSlug slug = do
   when (T.null num)  $ Left MissingIssueNumber
   let description = T.drop 1 rest
   when (T.null description) $ Left EmptyDescription
+  validateDescription description
   pure (issueId, description)
+
+validateDescription :: Text -> Either BranchError ()
+validateDescription description =
+  unless (T.all isValidDescriptionChar description) $
+    Left (InvalidDescription description)
+
+isValidDescriptionChar :: Char -> Bool
+isValidDescriptionChar c = isLower c || isDigit c || c == '-'

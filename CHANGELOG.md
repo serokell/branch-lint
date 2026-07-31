@@ -20,3 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `branch-lint` CLI that accepts a branch name as an argument or from stdin
   and exits non-zero with a human-readable error message on validation
   failure. (#2)
+
+### Fixed
+
+- Validated branch descriptions as lowercase kebab-case with optional
+  digits, rejecting uppercase and other unsupported characters. (#4)
