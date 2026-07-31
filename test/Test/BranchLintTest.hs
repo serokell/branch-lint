@@ -37,6 +37,9 @@ test_parseBranch = testGroup "parseBranch"
     , testCase "multi-digit github issue" $
         assertEqual "" (rb "bob" "#228" "add-yellow-button")
           (parseBranch "bob/#228-add-yellow-button")
+    , testCase "description may include digits" $
+        assertEqual "" (rb "eve" "#19" "release-2-notes")
+          (parseBranch "eve/#19-release-2-notes")
     ]
   , testGroup "invalid"
     [ testCase "no slash" $
@@ -69,6 +72,12 @@ test_parseBranch = testGroup "parseBranch"
     , testCase "github issue empty description" $
         assertEqual "" (Left EmptyDescription)
           (parseBranch "alice/#5")
+    , testCase "description rejects uppercase letters" $
+        assertEqual "" (Left (InvalidDescription "Setup-repository"))
+          (parseBranch "alice/bl1-Setup-repository")
+    , testCase "description rejects underscores" $
+        assertEqual "" (Left (InvalidDescription "setup_repository"))
+          (parseBranch "alice/bl1-setup_repository")
     ]
   ]
 
@@ -90,12 +99,18 @@ test_renderError = testGroup "renderError"
       assertNonEmpty (renderError (InvalidIssueNumber "abc"))
   , testCase "non-empty for EmptyDescription" $
       assertNonEmpty (renderError EmptyDescription)
+  , testCase "non-empty for InvalidDescription" $
+      assertNonEmpty (renderError (InvalidDescription "Setup-repository"))
   , testCase "InvalidIssueKey message contains the key" $
       assertBool "message should contain the key" $
         T.isInfixOf "bl@" (renderError (InvalidIssueKey "bl@"))
   , testCase "InvalidIssueNumber message contains the number" $
       assertBool "message should contain the number" $
         T.isInfixOf "abc" (renderError (InvalidIssueNumber "abc"))
+  , testCase "InvalidDescription message contains the description" $
+      assertBool "message should contain the description" $
+        T.isInfixOf "Setup-repository"
+          (renderError (InvalidDescription "Setup-repository"))
   ]
 
 -- Helpers
