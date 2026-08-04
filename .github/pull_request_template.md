@@ -56,12 +56,17 @@ you must be able to justify that.
     - [README](../tree/master/README.md)
     - Haddock
 
+- Agent instructions (conditional)
+  - [ ] If this PR was opened by a coding agent (Claude Code, Copilot, etc.),
+        it followed the agent instructions in `.claude/settings.json`
+        (plugin) and `.github/copilot-instructions.md`.
+
 [//]: # (Mostly for public repositories)
 [//]: # (Recording changes is optional, depends on repository, useful for some libs)
 - Public contracts
   - [ ] Any modifications of public contracts comply with the [Evolution
-  of Public Contracts](https://www.notion.so/serokell/Evolution-of-Public-Contracts-2a3bf7971abe4806a24f63c84e7076c5) policy.
-  - [ ] I added an entry to the [changelog](../tree/master/CHANGES.md) if my changes are visible to the users
+  of Public Contracts](https://app.notion.com/p/serokell/Evolution-of-Public-Contracts-2a3bf7971abe4806a24f63c84e7076c5) policy.
+  - [ ] I added an entry to the [changelog](../tree/master/CHANGELOG.md) if my changes are visible to the users
         and
   - [ ] provided a migration guide for breaking changes if possible
 
@@ -69,7 +74,7 @@ you must be able to justify that.
 
 [//]: # (Update link to style guide if necesary or remove if it's not present)
 
-- [ ] My commits comply with [the policy used in Serokell](https://www.notion.so/serokell/Where-and-how-to-commit-your-work-58f8973a4b3142c8abbd2e6fd5b3a08e).
+- [ ] My commits comply with [the policy used in Serokell](https://app.notion.com/p/serokell/Where-and-how-to-commit-your-work-58f8973a4b3142c8abbd2e6fd5b3a08e).
 - [ ] My code complies with the [style guide](../tree/master/docs/code-style.md).
 
 ## ✓ Release Checklist
