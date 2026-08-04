@@ -67,6 +67,20 @@
             compiler-nix-name = "ghc9102";
           }).getComponent "branch-lint:exe:branch-lint";
 
+        # Integration derivation: exercises the compiled executable
+        # (not just the library API), which is not on PATH in the
+        # `ci.test-all` derivation because it's built by a separate
+        # derivation. Takes both as explicit inputs. Lives under
+        # `packages`, not `checks`, so building it doesn't force
+        # evaluation of `ci.build-all`/`ci.test-all`.
+        packages.cli-integration-test = pkgs.runCommand "branch-lint-cli-test"
+          {
+            nativeBuildInputs = [ self.packages."${system}".branch-lint ];
+          } ''
+          bash ${./test/cli/run.sh}
+          touch $out
+        '';
+
         devShell = {
           ci = pkgs.mkShell {
             buildInputs = [
