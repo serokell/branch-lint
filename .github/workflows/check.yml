@@ -45,6 +45,13 @@ jobs:
         run: nix build -L .#checks.x86_64-linux.hpack
         if: success() || failure()
 
+      # Coverage lives under `packages`, not `checks`, so it needs its own
+      # explicit step here (see the comment on `packages.coverage-check`
+      # in flake.nix for why).
+      - name: coverage-check
+        run: nix build -L .#packages.x86_64-linux.coverage-check
+        if: success() || failure()
+
       # - name: shellcheck
       #   run: nix build -L .#checks.x86_64-linux.shellcheck
       #   if: success() || failure()
