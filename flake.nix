@@ -81,17 +81,17 @@
           touch $out
         '';
 
-        devShell = {
+        devShells = {
           ci = pkgs.mkShell {
             buildInputs = [
               # To avoid version mismatches, use `nix develop .#ci -c hpack`
               pkgs.hpack
 
-              # Uncomment if your project uses scheduled pipeline for `cabal outdated` check
-              # pkgs.cabal-install
-              # pkgs.curl
-              # # GHC is required for `cabal outdated`
-              # pkgs.ghc
+              # check-outdated.yml's scheduled pipeline needs these for `cabal outdated`
+              pkgs.cabal-install
+              pkgs.curl
+              # GHC is required for `cabal outdated`
+              pkgs.ghc
             ];
           };
         };
